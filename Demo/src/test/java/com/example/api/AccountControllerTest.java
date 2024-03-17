@@ -111,6 +111,7 @@ public class AccountControllerTest {
 
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(MediaType.APPLICATION_JSON, responseEntity.getHeaders().getContentType());
         assertEquals(payments, responseEntity.getBody());
     }
 
@@ -128,6 +129,7 @@ public class AccountControllerTest {
 
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(MediaType.APPLICATION_JSON, responseEntity.getHeaders().getContentType());
         assertEquals(applicationUser, responseEntity.getBody());
     }
 

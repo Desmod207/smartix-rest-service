@@ -79,6 +79,7 @@ class ApplicationUserServiceTest {
         assertTrue(optionalUser.isPresent());
         assertEquals(applicationUser, optionalUser.get());
 
+        Mockito.verify(applicationUserRepository).findByLogin(any());
         Mockito.verifyNoMoreInteractions(applicationUserRepository);
     }
 
@@ -94,6 +95,10 @@ class ApplicationUserServiceTest {
 
         assertNotNull(responseString);
         assertEquals("Payment is success", responseString);
+
+        Mockito.verify(applicationUserRepository).findByLogin(any());
+        Mockito.verify(applicationUserRepository).save(any());
+        Mockito.verifyNoMoreInteractions(applicationUserRepository);
     }
 
     @Test
@@ -108,6 +113,9 @@ class ApplicationUserServiceTest {
 
         assertNotNull(responseString);
         assertEquals("Not enough funds", responseString);
+
+        Mockito.verify(applicationUserRepository).findByLogin(any());
+        Mockito.verifyNoMoreInteractions(applicationUserRepository);
     }
 
     @Test
@@ -128,6 +136,11 @@ class ApplicationUserServiceTest {
 
         assertNotNull(returnsPayments);
         assertEquals(payments, returnsPayments);
+
+        Mockito.verify(applicationUserRepository).findByLogin(any());
+        Mockito.verify(paymentRepository).findAllByUser(any(), any());
+        Mockito.verifyNoMoreInteractions(applicationUserRepository);
+        Mockito.verifyNoMoreInteractions(paymentRepository);
     }
 
     @Test
@@ -147,6 +160,10 @@ class ApplicationUserServiceTest {
 
         assertNotNull(updateUser);
         assertEquals(updateUser, applicationUser);
+
+        Mockito.verify(applicationUserRepository).findByLogin(any());
+        Mockito.verify(applicationUserRepository).save(any());
+        Mockito.verifyNoMoreInteractions(applicationUserRepository);
     }
 
 }

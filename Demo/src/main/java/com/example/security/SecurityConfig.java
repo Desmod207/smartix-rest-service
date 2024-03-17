@@ -21,12 +21,12 @@ public class SecurityConfig {
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/balance").hasRole("USER")
-                        .requestMatchers(
-                                "/api/registration",
+                        .requestMatchers("/api/balance",
                                 "/api/payment",
                                 "/api/history",
-                                "/api/edit"
+                                "/api/edit").hasRole("USER")
+                        .requestMatchers(
+                                "/api/registration"
                             ).permitAll())
                 .build();
     }
