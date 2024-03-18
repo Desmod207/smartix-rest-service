@@ -5,6 +5,7 @@ import com.example.data.PaymentRepository;
 import com.example.entities.ApplicationUser;
 import com.example.entities.Payment;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -20,10 +21,13 @@ public class ApplicationUserService {
 
     private final PaymentRepository paymentRepository;
 
+    private final PasswordEncoder passwordEncoder;
 
-    public ApplicationUserService(ApplicationUserRepository applicationUserRepository, PaymentRepository paymentRepository) {
+
+    public ApplicationUserService(ApplicationUserRepository applicationUserRepository, PaymentRepository paymentRepository, PasswordEncoder passwordEncoder) {
         this.applicationUserRepository = applicationUserRepository;
         this.paymentRepository = paymentRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Optional<ApplicationUser> registrationNewUser(ApplicationUser applicationUser) {
@@ -32,6 +36,8 @@ public class ApplicationUserService {
             return Optional.empty();
         } else {
             applicationUser.setBalance(START_BALANCE);
+            var encodePassword = passwordEncoder.encode(applicationUser.getPassword());
+            applicationUser.setPassword(encodePassword);
             return Optional.of(applicationUserRepository.save(applicationUser));
         }
     }

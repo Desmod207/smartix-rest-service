@@ -31,9 +31,6 @@ public class AccountControllerTest {
     @Mock
     ApplicationUserService service;
 
-    @Mock
-    PasswordEncoder encoder;
-
     @InjectMocks
     AccountController controller;
 
@@ -43,7 +40,6 @@ public class AccountControllerTest {
         var optionalUser = Optional.of(applicationUser);
 
         Mockito.doReturn(optionalUser).when(service).registrationNewUser(applicationUser);
-        Mockito.doReturn("password").when(encoder).encode(any());
 
         var responseEntity = controller.handleRegistrationNewUser(applicationUser);
 

@@ -33,11 +33,8 @@ public class AccountController {
 
     private final ApplicationUserService applicationUserService;
 
-    private final PasswordEncoder passwordEncoder;
-
-    public AccountController(ApplicationUserService applicationUserService, PasswordEncoder passwordEncoder) {
+    public AccountController(ApplicationUserService applicationUserService) {
         this.applicationUserService = applicationUserService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/api/registration")
@@ -45,12 +42,9 @@ public class AccountController {
     public ResponseEntity<?> handleRegistrationNewUser(@RequestBody  ApplicationUser applicationUser) {
         Optional<ApplicationUser> optionalUser = applicationUserService.registrationNewUser(applicationUser);
         if (optionalUser.isPresent()) {
-            var user = optionalUser.get();
-            var encodePassword = passwordEncoder.encode(user.getPassword());
-            user.setPassword(encodePassword);
             return ResponseEntity.created(URI.create("/api/profile"))
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(user);
+                    .body(optionalUser.get());
         } else {
             return ResponseEntity.badRequest().build();
         }

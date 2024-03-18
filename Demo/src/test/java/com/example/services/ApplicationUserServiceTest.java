@@ -14,6 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Date;
 import java.util.List;
@@ -31,6 +32,9 @@ class ApplicationUserServiceTest {
     @Mock
     PaymentRepository paymentRepository;
 
+    @Mock
+    PasswordEncoder encoder;
+
     @InjectMocks
     ApplicationUserService service;
 
@@ -41,6 +45,7 @@ class ApplicationUserServiceTest {
         Mockito.doReturn(Optional.empty()).when(applicationUserRepository)
                 .findByLogin(applicationUser.getLogin());
         Mockito.doReturn(applicationUser).when(applicationUserRepository).save(applicationUser);
+        Mockito.doReturn("password").when(encoder).encode(any());
 
         Optional<ApplicationUser> optionalNewUser = service.registrationNewUser(applicationUser);
 
